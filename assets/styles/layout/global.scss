@@ -2,7 +2,7 @@ $color-gradient-1: lighten(transparentize($color-secondary, 0.15), 20);
 $color-gradient-2: lighten(transparentize($color-primary, 0.15), 10);
 
 html {
-  font-size: 62.5%;
+  font-size: 1em;
   font-family: $font-primary;
 }
 
