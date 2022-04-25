@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scope index{% endblock %}
+
+{% block body %}
+    <h1>Scope index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Active</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for scope in scopes %}
+            <tr>
+                <td>{{ scope.id }}</td>
+                <td>{{ scope.active ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_scope_show', {'id': scope.id}) }}">show</a>
+                    <a href="{{ path('app_scope_edit', {'id': scope.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_scope_new') }}">Create new</a>
+{% endblock %}

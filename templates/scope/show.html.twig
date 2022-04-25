@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scope{% endblock %}
+
+{% block body %}
+    <h1>Scope</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ scope.id }}</td>
+            </tr>
+            <tr>
+                <th>Active</th>
+                <td>{{ scope.active ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_scope_index') }}">back to list</a>
+
+    <a href="{{ path('app_scope_edit', {'id': scope.id}) }}">edit</a>
+
+    {{ include('scope/_delete_form.html.twig') }}
+{% endblock %}

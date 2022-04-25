@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Scope{% endblock %}
+
+{% block body %}
+    <h1>Create new Scope</h1>
+
+    {{ include('scope/_form.html.twig') }}
+
+    <a href="{{ path('app_scope_index') }}">back to list</a>
+{% endblock %}
