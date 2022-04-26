@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="{{ app.request.locale }}">
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Bienvenue sur Modulo !{% endblock %} - Modulo Scout</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="{{asset('favicon_io/apple-touch-icon.png')}}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{{asset('favicon_io/favicon-32x32.png')}}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{{asset('favicon_io/favicon-16x16.png')}}">
-        <link rel="manifest" href="{{asset('favicon_io/site.webmanifest')}}">
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Bienvenue sur Modulo !{% endblock %} - Modulo Scout</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon_io/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon_io/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon_io/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('favicon_io/site.webmanifest') }}">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body class="{% block bodyClass %}{% endblock %}">
-        {% block body %}
-            {% block flashMessages %}
-                {% set allMessages = app.session.flashBag.all %}
-                {% if allMessages|length > 0 %}
-                    <div class="flash-messages">
-                        {% for type, messages in allMessages %}
-                            <ul class="messages messages--{{ type }}">
-                                {% for message in messages %}
-                                    <li class="message">{{ message|trans }}</li>
-                                {% endfor %}
-                            </ul>
+    {% block javascripts %}
+        {{ encore_entry_script_tags('app') }}
+    {% endblock %}
+</head>
+<body class="{% block bodyClass %}{% endblock %}">
+{% block body %}
+    {% block flashMessages %}
+        {% set allMessages = app.session.flashBag.all %}
+        {% if allMessages|length > 0 %}
+            <div class="flash-messages">
+                {% for type, messages in allMessages %}
+                    <ul class="messages messages--{{ type }}">
+                        {% for message in messages %}
+                            <li class="message">{{ message|trans }}</li>
                         {% endfor %}
-                    </div>
-                {% endif %}
-            {% endblock %}
-        {% endblock %}
-    </body>
+                    </ul>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
+{% block footer %}
+    <footer>
+        <a>Aide</a>
+        <a>A propos</a>
+        <a>Gestion des cookies</a>
+        <a>Mentions légales</a>
+    </footer>
+{% endblock %}
+</body>
 </html>
