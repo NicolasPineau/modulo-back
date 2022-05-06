@@ -29,7 +29,7 @@ class Role
     private AgeSection $ageSection;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    private $icon;
+    private ?string $icon;
 
     #[Pure] public function __construct(string $name, string $code, AgeSection $ageSection, ?string $feminineName = null)
     {
