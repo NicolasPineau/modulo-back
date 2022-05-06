@@ -16,6 +16,9 @@ class TypeEvent
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isObligated;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,18 @@ class TypeEvent
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getIsObligated(): ?bool
+    {
+        return $this->isObligated;
+    }
+
+    public function setIsObligated(bool $isObligated): self
+    {
+        $this->isObligated = $isObligated;
 
         return $this;
     }

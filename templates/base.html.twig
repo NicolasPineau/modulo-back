@@ -49,9 +49,15 @@
                 <li>
                     <a class="nav-link" href="{{ path('home') }}">Messagerie<span class="sr-only">(current)</span></a>
                 </li>
+                {% if not is_granted('ROLE_AUM' or not is_granted('ROLE_AUM-T')) and not app.user.roles is same as(["ROLE_USER"]) %}
+                    <li>
+                        <a class="nav-link" href="{{ path('app_event_new') }}">Créer un événement</a>
+                    </li>
+                {% endif %}
                 {% if is_granted('ROLE_ADMIN') %}
                     <li>
-                        <a class="nav-link" href="{{ path('admin') }}">Espace administration<span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{{ path('admin') }}">Espace administration<span
+                                class="sr-only">(current)</span></a>
                     </li>
                 {% endif %}
             </ul>
