@@ -36,7 +36,12 @@ class UserFixture extends Fixture
             $firstName = $faker->firstName;
             $lastName = $faker->lastName;
             $email = $faker->email();
-            $user = new User($code, $email, $firstName, $lastName, $genre);
+            $user = new User();
+            $user->setUuid($code);
+            $user->setEmail($email);
+            $user->setFirstName($firstName);
+            $user->setLastName($lastName);
+            $user->setGenre($genre);
             $user->setPassword($this->passwordHasher->hashPassword(
                 $user,
                 self::DEFAULT_PASSWORD
@@ -70,7 +75,13 @@ class UserFixture extends Fixture
                 $scope = new Scope($user, $structure2, $role2);
                 $manager->persist($scope);
             }
+
         }
+
+        $userAdmin = new User('00000000', 'admin@gmail.com','Mehdi','Laribi','H');
+        $userAdmin = $userAdmin->setRoles(["ROLE_ADMIN"]);
+        $userAdmin = $userAdmin->setPassword($this->passwordHasher->hashPassword($user,'test'));
+        $manager->persist($userAdmin);
 
         $manager->flush();
     }

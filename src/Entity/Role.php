@@ -25,7 +25,7 @@ class Role
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private ?string $feminineName = null;
 
-    #[ORM\ManyToOne(targetEntity: AgeSection::class)]
+    #[ORM\ManyToOne(targetEntity: AgeSection::class, cascade: ['persist'])]
     private AgeSection $ageSection;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]

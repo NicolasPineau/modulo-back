@@ -16,13 +16,14 @@ class Scope
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
+
     private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Structure::class)]
+    #[ORM\ManyToOne(targetEntity: Structure::class, cascade: ['persist'])]
     private Structure $structure;
 
-    #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\ManyToOne(targetEntity: Role::class, cascade: ['persist'])]
     private Role $role;
 
     #[ORM\Column(type: 'boolean')]
@@ -45,14 +46,36 @@ class Scope
         return $this->user;
     }
 
+    public function setUser(User $user):self
+    {
+        $this->user = $user;
+
+        return $this;
+
+    }
+
     public function getStructure(): Structure
     {
         return $this->structure;
     }
 
+    public function setStructure(Structure $structure):self
+    {
+        $this->structure = $structure;
+
+        return $this;
+    }
+
+
     public function getRole(): Role
     {
         return $this->role;
+    }
+
+    public function setRole(Role $role):self
+    {
+        $this->role = $role;
+        return $this;
     }
 
     public function setActive(bool $active): self
@@ -66,4 +89,6 @@ class Scope
     {
         return $this->active;
     }
+
+
 }

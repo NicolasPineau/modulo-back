@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    const ROLE_ADMIN = "ROLE_ADMIN";
+    const ROLE_USER = "ROLE_USER";
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -40,14 +43,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 1)]
     private string $genre;
 
-    public function __construct(string $uuid, string $email, string $firstName, string $lastName, string $genre)
-    {
-        $this->uuid = $uuid;
-        $this->email = $email;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->genre = $genre;
-    }
+   // public function __construct(string $uuid, string $email, string $firstName, string $lastName, string $genre )
+    //{
+       //  $this->uuid = $uuid;
+    //  $this->email = $email;
+    //  $this->firstName = $firstName;
+    //  $this->lastName = $lastName;
+    //  $this->genre = $genre;
+
+    //  }
 
     public function getId(): ?int
     {
@@ -58,6 +62,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->uuid;
     }
+
+    public function setUuid(?string $uuid):self
+    {
+        $this->uuid =$uuid;
+
+        return $this;
+    }
+
+
 
     public function getEmail(): string
     {

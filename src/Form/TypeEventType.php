@@ -2,31 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\User;
+use App\Entity\TypeEvent;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UserType extends AbstractType
+class TypeEventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('uuid')
-            ->add('email')
-            ->add('password')
-            ->add('firstName')
-            ->add('lastName')
-            ->add('genre')
+            ->add('name')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
-            'attr'=>['id'=>'form_user']
+            'data_class' => TypeEvent::class,
         ]);
     }
 }
