@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -43,15 +44,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 1)]
     private string $genre;
 
-   // public function __construct(string $uuid, string $email, string $firstName, string $lastName, string $genre )
-    //{
-       //  $this->uuid = $uuid;
-    //  $this->email = $email;
-    //  $this->firstName = $firstName;
-    //  $this->lastName = $lastName;
-    //  $this->genre = $genre;
-
-    //  }
+    #[ORM\OneToMany(targetEntity: Scope::class, cascade: ['persist'],mappedBy: "user",orphanRemoval: true)]
+    private Collection $scopes;
 
     public function getId(): ?int
     {
@@ -69,8 +63,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
-
 
     public function getEmail(): string
     {
@@ -171,5 +163,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials()
     {
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstName .' '. $this->lastName;
     }
 }

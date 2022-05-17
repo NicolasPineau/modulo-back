@@ -32,53 +32,64 @@ class UserFixture extends Fixture
             }
 
             [$code, $structureCode, $role, $structureCode2, $role2] = $row;
-            $genre = $faker->boolean() ? 'H' : 'F';
-            $firstName = $faker->firstName;
-            $lastName = $faker->lastName;
-            $email = $faker->email();
-            $user = new User();
-            $user->setUuid($code);
-            $user->setEmail($email);
-            $user->setFirstName($firstName);
-            $user->setLastName($lastName);
-            $user->setGenre($genre);
-            $user->setPassword($this->passwordHasher->hashPassword(
-                $user,
-                self::DEFAULT_PASSWORD
-            ));
-            $manager->persist($user);
+            if($row[0]!= null)
+            {
+                $genre = $faker->boolean() ? 'H' : 'F';
+                $firstName = $faker->firstName;
+                $lastName = $faker->lastName;
+                $email = $faker->email();
+                $user = new User();
+                $user->setUuid($code);
+                $user->setEmail($email);
+                $user->setFirstName($firstName);
+                $user->setLastName($lastName);
+                $user->setGenre($genre);
+                $user->setPassword($this->passwordHasher->hashPassword(
+                    $user,
+                    self::DEFAULT_PASSWORD
+                ));
+                $manager->persist($user);
 
-            $structure = $this->getReference(sprintf('structure-%s', $structureCode));
-            if (!$structure instanceof Structure) {
-                throw new LogicException();
-            }
 
-            $role = $this->getReference(sprintf('role-%s', $role));
-            if (!$role instanceof Role) {
-                throw new LogicException();
-            }
-
-            $scope = new Scope($user, $structure, $role);
-            $manager->persist($scope);
-
-            if (!empty($structureCode2)) {
-                $structure2 = $this->getReference(sprintf('structure-%s', $structureCode));
-                if (!$structure2 instanceof Structure) {
+                $structure = $this->getReference(sprintf('structure-%s', $structureCode));
+                if (!$structure instanceof Structure) {
                     throw new LogicException();
                 }
 
-                $role2 = $this->getReference(sprintf('role-%s', $role2));
-                if (!$role2 instanceof Role) {
+                $role = $this->getReference(sprintf('role-%s', $role));
+                if (!$role instanceof Role) {
                     throw new LogicException();
                 }
 
-                $scope = new Scope($user, $structure2, $role2);
+                $scope = new Scope();
+                $scope->setUser($user);
+                $scope->setStructure($structure);
+                $scope->setRole($role);
                 $manager->persist($scope);
-            }
 
+                if (!empty($structureCode2)) {
+                    $structure2 = $this->getReference(sprintf('structure-%s', $structureCode));
+                    if (!$structure2 instanceof Structure) {
+                        throw new LogicException();
+                    }
+
+                    $role2 = $this->getReference(sprintf('role-%s', $role2));
+                    if (!$role2 instanceof Role) {
+                        throw new LogicException();
+                    }
+
+                    $scope = new Scope($user, $structure2, $role2);
+                    $manager->persist($scope);
+                }
+            }
         }
 
-        $userAdmin = new User('00000000', 'admin@gmail.com','Mehdi','Laribi','H');
+        $userAdmin = new User();
+        $userAdmin->setUuid('00000000');
+        $userAdmin->setEmail('admin@gmail.com');
+        $userAdmin->setFirstName('Mehdi');
+        $userAdmin->setLastName('Laribi');
+        $userAdmin->setGenre('H');
         $userAdmin = $userAdmin->setRoles(["ROLE_ADMIN"]);
         $userAdmin = $userAdmin->setPassword($this->passwordHasher->hashPassword($user,'test'));
         $manager->persist($userAdmin);

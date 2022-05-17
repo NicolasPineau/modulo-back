@@ -65,4 +65,9 @@ class Structure
     {
         return $this->parentStructure;
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }

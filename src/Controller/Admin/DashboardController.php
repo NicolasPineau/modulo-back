@@ -20,8 +20,6 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
         return $this->render('admin/dashboard.html.twig');
-
-
     }
 
     public function configureDashboard(): Dashboard
@@ -36,6 +34,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Accueil', 'fa fa-home');
         yield MenuItem::linkToCrud('Les utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Les types d\'évenement', 'fas fa-calendar', TypeEvent::class);
-        //yield MenuItem::linkToCrud('Les scopes', 'fas fa-location-pin', Scope::class);
+        yield MenuItem::linkToCrud('Les scopes', 'fas fa-map', Scope::class);
     }
 }

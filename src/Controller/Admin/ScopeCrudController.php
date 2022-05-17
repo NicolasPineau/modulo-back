@@ -2,9 +2,20 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Role;
+use App\Entity\Structure;
 use App\Entity\Scope;
+use App\Entity\User;
+use App\Repository\RoleRepository;
+use App\Repository\StructureRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+
 
 class ScopeCrudController extends AbstractCrudController
 {
@@ -18,17 +29,20 @@ class ScopeCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInPlural('Scopes')
             ->setEntityLabelInSingular('Scope')
-            ->setPageTitle("index", "Les utilisateurs");
+            ->setPageTitle("index", "Les scopes");
     }
 
-    /*
+
+
     public function configureFields(string $pageName): iterable
     {
+
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            yield AssociationField::new('user')->setCrudController(UserCrudController::class),
+            yield AssociationField::new('structure')->setCrudController(StructureCrudController::class),
+            yield AssociationField::new('role')->setCrudController(RoleCrudController::class),
+            BooleanField::new('active')
         ];
     }
-    */
+
 }

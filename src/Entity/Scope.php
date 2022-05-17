@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ScopeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: ScopeRepository::class)]
 #[ApiResource]
@@ -17,7 +18,6 @@ class Scope
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
-
     private User $user;
 
     #[ORM\ManyToOne(targetEntity: Structure::class, cascade: ['persist'])]
@@ -29,12 +29,7 @@ class Scope
     #[ORM\Column(type: 'boolean')]
     private bool $active = true;
 
-    #[Pure] public function __construct(User $user, Structure $structure, Role $role)
-    {
-        $this->user = $user;
-        $this->structure = $structure;
-        $this->role = $role;
-    }
+
 
     public function getId(): ?int
     {
@@ -89,6 +84,7 @@ class Scope
     {
         return $this->active;
     }
+
 
 
 }
