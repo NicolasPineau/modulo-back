@@ -11,6 +11,8 @@ use App\Repository\StructureRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -22,6 +24,13 @@ class ScopeCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Scope::class;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            ->add(Crud::PAGE_INDEX,Action::DETAIL);
+
     }
 
     public function ConfigureCrud(Crud $crud):Crud
@@ -41,7 +50,7 @@ class ScopeCrudController extends AbstractCrudController
             yield AssociationField::new('user')->setCrudController(UserCrudController::class),
             yield AssociationField::new('structure')->setCrudController(StructureCrudController::class),
             yield AssociationField::new('role')->setCrudController(RoleCrudController::class),
-            BooleanField::new('active')
+            yield BooleanField::new('active')
         ];
     }
 

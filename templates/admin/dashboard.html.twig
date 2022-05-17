@@ -1,5 +1,57 @@
-{% extends "@EasyAdmin/page/content.html.twig"%}
+{% extends "@EasyAdmin/page/content.html.twig" %}
 
-{% block content %}
+{% block content_title %}
     <h1>Bienvenue dans l'espace d'administration</h1>
+    <p>Gérez ici les nombreuses fonctionnalités du site</p>
+
 {% endblock %}
+
+{% block main %}
+    <table class="datagrid">
+        <thead>
+        <tr>
+            <th scope="col">Nom de la fonctionnalité</th>
+            <th scope="col">Lien pour gérer les fonctionnalités</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Les utilisateurs</td>
+            <td>
+                {% set url = ea_url().setController('App\\Controller\\Admin\\UserCrudController') %}
+                <a href="{{ url }}">
+                    <button type="button" class="btn btn-info">
+                        Gestion des utilisateurs
+                    </button>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Les scopes</td>
+            <td>
+                {% set url = ea_url().setController('App\\Controller\\Admin\\ScopeCrudController') %}
+                <a href="{{ url }}">
+                    <button type="button" class="btn btn-info">
+                        Gestion des scopes
+                    </button>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>Les types d'évènements</td>
+            <td>
+                {% set url = ea_url().setController('App\\Controller\\Admin\\TypeEventCrudController') %}
+                <a href="{{ url }}">
+                    <button type="button" class="btn btn-info">
+                        Gestion des types d'évènements
+                    </button>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
