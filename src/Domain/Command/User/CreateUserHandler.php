@@ -14,10 +14,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class CreateUserHandler implements MessageHandlerInterface
 {
     public function __construct(
-        private EntityManagerInterface $entityManager,
-        private UserPasswordHasherInterface $userPasswordHasher,
-        private PasswordGenerator $passwordGenerator,
-        private Mailer $mailer
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
+        private readonly PasswordGenerator $passwordGenerator,
+        private readonly Mailer $mailer
     ) {
     }
 
@@ -26,7 +26,12 @@ class CreateUserHandler implements MessageHandlerInterface
      */
     public function __invoke(CreateUserCommand $command): void
     {
-        $user = new User($command->getUuid(), $command->getEmail(), $command->getFirstName(), $command->getLastName(), $command->getGenre());
+        $user = (new User())
+            ->setEmail($command->getEmail())
+            ->setFirstName($command->getFirstName())
+            ->setLastName($command->getLastName())
+            ->setGenre($command->getGenre())
+        ;
         $password = $command->getPassword() ?: $this->passwordGenerator->generate();
         $user->setPassword($this->userPasswordHasher->hashPassword($user, $password));
         if ($command->isAdmin()) {

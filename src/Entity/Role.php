@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[ApiResource]
@@ -14,7 +13,7 @@ class Role
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $name;
@@ -23,23 +22,20 @@ class Role
     private string $code;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private ?string $feminineName = null;
+    private ?string $feminineName;
 
     #[ORM\ManyToOne(targetEntity: AgeSection::class)]
     private AgeSection $ageSection;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    private $icon;
+    private ?string $icon;
 
-    #[Pure] public function __construct(string $name, string $code, AgeSection $ageSection, ?string $feminineName = null)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->code = $code;
-        $this->feminineName = $feminineName;
-        $this->ageSection = $ageSection;
+        $this->feminineName = null;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

@@ -15,7 +15,7 @@ class AgeSection
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?string $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 50)]
     private string $name;
@@ -26,14 +26,7 @@ class AgeSection
     #[ORM\Column(type: 'string', length: 50)]
     private string $color;
 
-    public function __construct(string $name, string $code, string $color)
-    {
-        $this->name = $name;
-        $this->code = $code;
-        $this->color = $color;
-    }
-
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -50,12 +43,12 @@ class AgeSection
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function setCode(?string $code): self
+    public function setCode(string $code): self
     {
         $this->code = $code;
 

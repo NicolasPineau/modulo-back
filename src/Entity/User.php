@@ -8,17 +8,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[UniqueEntity(fields: ['uuid'], message: 'There is already an account with this uuid')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
-
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: 'string', length: 96, unique: true)]
     private string $uuid;
 
@@ -39,20 +35,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string', length: 1)]
     private string $genre;
-
-    public function __construct(string $uuid, string $email, string $firstName, string $lastName, string $genre)
-    {
-        $this->uuid = $uuid;
-        $this->email = $email;
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-        $this->genre = $genre;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getUuid(): string
     {
@@ -78,7 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->uuid;
+        return $this->uuid;
     }
 
     /**
@@ -153,7 +135,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFullName(): string
     {
-        return trim(sprintf('%s %s', $this->getFirstName(), $this->getLastName()));
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
     public function eraseCredentials()

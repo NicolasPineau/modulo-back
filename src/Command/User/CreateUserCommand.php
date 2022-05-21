@@ -19,21 +19,9 @@ use Throwable;
 )]
 class CreateUserCommand extends Command
 {
-    public function __construct(private CommandDispatcher $messageDispatcher)
+    public function __construct(private readonly CommandDispatcher $messageDispatcher)
     {
         parent::__construct();
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->addArgument('firstName', InputArgument::REQUIRED, 'The first name.')
-            ->addArgument('lastName', InputArgument::REQUIRED, 'The last name.')
-            ->addArgument('genre', InputArgument::REQUIRED, 'The user genre (H/F).')
-            ->addArgument('uuid', InputArgument::REQUIRED, 'The member number (9 digits).')
-            ->addArgument('email', InputArgument::REQUIRED, 'The email address.')
-            ->addOption('admin', 'a', InputOption::VALUE_NONE, 'User is admin.')
-        ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
@@ -52,33 +40,51 @@ class CreateUserCommand extends Command
 
         /** @var string $uuid */
         $email = $input->getArgument('email');
-        
-        $isAdmin = (bool) $input->getOption('admin');
+
+        $isAdmin = (bool)$input->getOption('admin');
 
         if (empty($uuid) || empty($email)) {
             $output->writeLn('<fg=red;>uuid and email options are mandatory.</>');
         }
 
-        $output->writeln(sprintf(
-            'Creating use with uuid = %s, email = %s%s',
-            $uuid,
-            $email,
-            $isAdmin ? ' (admin)' : ''
-        ));
+        $output->writeln(
+            sprintf(
+                'Creating use with uuid = %s, email = %s%s',
+                $uuid,
+                $email,
+                $isAdmin ? ' (admin)' : ''
+            )
+        );
 
         try {
-            $this->messageDispatcher->dispatch(new CreateUserDomainCommand($uuid, $email, $firstName, $lastName, $genre, null, true));
+            $this->messageDispatcher->dispatch(
+                new CreateUserDomainCommand($uuid, $email, $firstName, $lastName, $genre, null, true)
+            );
         } catch (Throwable $exception) {
-            $output->writeLn(sprintf(
-                '<fg=red;>failed creating user : %s at line %u in %s.</>',
-                $exception->getMessage(),
-                $exception->getLine(),
-                $exception->getFile(),
-            ));
+            $output->writeLn(
+                sprintf(
+                    '<fg=red;>failed creating user : %s at line %u in %s.</>',
+                    $exception->getMessage(),
+                    $exception->getLine(),
+                    $exception->getFile(),
+                )
+            );
 
             return Command::FAILURE;
         }
 
         return Command::SUCCESS;
+    }
+
+    protected function configure(): void
+    {
+        $this
+            ->addArgument('firstName', InputArgument::REQUIRED, 'The first name.')
+            ->addArgument('lastName', InputArgument::REQUIRED, 'The last name.')
+            ->addArgument('genre', InputArgument::REQUIRED, 'The user genre (H/F).')
+            ->addArgument('uuid', InputArgument::REQUIRED, 'The member number (9 digits).')
+            ->addArgument('email', InputArgument::REQUIRED, 'The email address.')
+            ->addOption('admin', 'a', InputOption::VALUE_NONE, 'User is admin.')
+        ;
     }
 }

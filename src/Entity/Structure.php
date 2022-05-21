@@ -13,7 +13,7 @@ class Structure
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $name;
@@ -23,16 +23,14 @@ class Structure
 
     #[ORM\ManyToOne(targetEntity: Structure::class)]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Structure $parentStructure = null;
+    private ?Structure $parentStructure;
 
-    public function __construct(string $name, string $code, ?Structure $parentStructure)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->code = $code;
-        $this->parentStructure = $parentStructure;
+        $this->parentStructure = null;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -64,5 +62,12 @@ class Structure
     public function getParentStructure(): ?Structure
     {
         return $this->parentStructure;
+    }
+
+    public function setParentStructure(?Structure $parentStructure): self
+    {
+        $this->parentStructure = $parentStructure;
+
+        return $this;
     }
 }
