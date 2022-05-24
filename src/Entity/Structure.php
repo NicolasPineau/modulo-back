@@ -5,15 +5,17 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\StructureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: StructureRepository::class)]
 #[ApiResource]
 class Structure
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private int $id;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $name;
@@ -30,7 +32,7 @@ class Structure
         $this->parentStructure = null;
     }
 
-    public function getId(): int
+    public function getId(): Uuid
     {
         return $this->id;
     }

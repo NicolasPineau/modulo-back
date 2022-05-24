@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Enum\Gender;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UserFixture extends GeneratedFixture
@@ -24,8 +25,10 @@ final class UserFixture extends GeneratedFixture
         $user->setEmail($this->faker->email())
             ->setLastName($this->faker->lastName())
             ->setPassword($this->passwordHasher->hashPassword($user, self::DEFAULT_PASSWORD))
-            ->setGenre($this->faker->boolean() ? 'M' : 'F')
-            ->setFirstName($user->getGenre() === 'M' ? $this->faker->firstNameMale() : $this->faker->firstNameFemale())
+            ->setGenre($this->faker->boolean() ? Gender::Men : Gender::Woman)
+            ->setFirstName(
+                $user->getGenre() === Gender::Men ? $this->faker->firstNameMale() : $this->faker->firstNameFemale()
+            )
         ;
 
         return $user;

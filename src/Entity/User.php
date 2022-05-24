@@ -2,21 +2,23 @@
 
 namespace App\Entity;
 
+use App\Enum\Gender;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'user.email.already_exist')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[ORM\Column(type: 'string', length: 96, unique: true)]
-    private string $uuid;
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 200, unique: true)]
     private string $email;
@@ -33,12 +35,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private string $lastName;
 
-    #[ORM\Column(type: 'string', length: 1)]
-    private string $genre;
+    #[ORM\Column(type: 'string', enumType: Gender::class)]
+    private Gender $genre;
 
-    public function getUuid(): string
+    public function getId(): Uuid
     {
-        return $this->uuid;
+        return $this->id;
     }
 
     public function getEmail(): string
@@ -60,7 +62,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return $this->uuid;
+        return $this->id;
     }
 
     /**
@@ -121,12 +123,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGenre(): string
+    public function getGenre(): Gender
     {
         return $this->genre;
     }
 
-    public function setGenre(string $genre): User
+    public function setGenre(Gender $genre): User
     {
         $this->genre = $genre;
 
