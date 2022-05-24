@@ -6,15 +6,17 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ScopeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ScopeRepository::class)]
 #[ApiResource]
 class Scope
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private User $user;
@@ -26,16 +28,15 @@ class Scope
     private Role $role;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $active = true;
+    private bool $active;
 
-    #[Pure] public function __construct(User $user, Structure $structure, Role $role)
+    #[Pure]
+    public function __construct()
     {
-        $this->user = $user;
-        $this->structure = $structure;
-        $this->role = $role;
+        $this->active = true;
     }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
@@ -45,9 +46,23 @@ class Scope
         return $this->user;
     }
 
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     public function getStructure(): Structure
     {
         return $this->structure;
+    }
+
+    public function setStructure(Structure $structure): self
+    {
+        $this->structure = $structure;
+
+        return $this;
     }
 
     public function getRole(): Role
@@ -55,9 +70,9 @@ class Scope
         return $this->role;
     }
 
-    public function setActive(bool $active): self
+    public function setRole(Role $role): self
     {
-        $this->active = $active;
+        $this->role = $role;
 
         return $this;
     }
@@ -65,5 +80,12 @@ class Scope
     public function isActive(): bool
     {
         return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
     }
 }
