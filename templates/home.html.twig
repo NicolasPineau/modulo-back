@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  todo
+    <h1>Bienvenues !</h1>
+    {% for event in events %}
+        <div class="event">
+            <div>Intitulé : {{ event.title }}</div>
+            <div>Description : {{ event.description }}</div>
+            <div>Date et heure de début : {{ event.dateStart ? event.dateStart|date('d/m/Y à h:m') : ' ' }}</div>
+            <div>Date et heure de fin : {{ event.dateEnd ? event.dateEnd|date('d/m/Y à h:m') : ' ' }}</div>
+        </div>
+    {% endfor %}
 {% endblock %}

@@ -12,6 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 use LogicException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+
 class UserFixture extends Fixture
 {
     const DEFAULT_PASSWORD = 'password';
@@ -32,8 +33,7 @@ class UserFixture extends Fixture
             }
 
             [$code, $structureCode, $role, $structureCode2, $role2] = $row;
-            if($row[0]!= null)
-            {
+            if ($row[0] != null) {
                 $genre = $faker->boolean() ? 'H' : 'F';
                 $firstName = $faker->firstName;
                 $lastName = $faker->lastName;
@@ -64,6 +64,7 @@ class UserFixture extends Fixture
                 $scope = new Scope();
                 $scope->setUser($user);
                 $scope->setStructure($structure);
+                $scope->setCreatedAt(new \DateTime('now'));
                 $scope->setRole($role);
                 $manager->persist($scope);
 
@@ -79,6 +80,7 @@ class UserFixture extends Fixture
                     }
 
                     $scope = new Scope($user, $structure2, $role2);
+                    $scope->setCreatedAt(new \DateTime('now'));
                     $manager->persist($scope);
                 }
             }
@@ -91,7 +93,7 @@ class UserFixture extends Fixture
         $userAdmin->setLastName('Laribi');
         $userAdmin->setGenre('H');
         $userAdmin = $userAdmin->setRoles(["ROLE_ADMIN"]);
-        $userAdmin = $userAdmin->setPassword($this->passwordHasher->hashPassword($user,'test'));
+        $userAdmin = $userAdmin->setPassword($this->passwordHasher->hashPassword($user, 'test'));
         $manager->persist($userAdmin);
 
         $manager->flush();

@@ -29,6 +29,8 @@ class Scope
     #[ORM\Column(type: 'boolean')]
     private bool $active = true;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
 
 
     public function getId(): ?int
@@ -41,7 +43,7 @@ class Scope
         return $this->user;
     }
 
-    public function setUser(User $user):self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
@@ -54,7 +56,7 @@ class Scope
         return $this->structure;
     }
 
-    public function setStructure(Structure $structure):self
+    public function setStructure(Structure $structure): self
     {
         $this->structure = $structure;
 
@@ -67,10 +69,15 @@ class Scope
         return $this->role;
     }
 
-    public function setRole(Role $role):self
+    public function setRole(Role $role): self
     {
         $this->role = $role;
         return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
     }
 
     public function setActive(bool $active): self
@@ -80,11 +87,17 @@ class Scope
         return $this;
     }
 
-    public function isActive(): bool
+    public function getCreatedAt(): ?\DateTime
     {
-        return $this->active;
+        return $this->createdAt;
     }
 
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
 
 
 }

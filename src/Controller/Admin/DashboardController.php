@@ -11,7 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use App\Entity\Event;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -31,9 +31,9 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Accueil', 'fa fa-home');
+        yield MenuItem::linkToCrud('Les évenements', 'fas fa-calendar', Event::class);
         yield MenuItem::linkToCrud('Les utilisateurs', 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud('Les types d\'évenement', 'fas fa-calendar', TypeEvent::class);
+        yield MenuItem::linkToCrud('Les types d\'évenement', 'fas fa-exclamation', TypeEvent::class);
         yield MenuItem::linkToCrud('Les scopes', 'fas fa-map', Scope::class);
     }
 }
