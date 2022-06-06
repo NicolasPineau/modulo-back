@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\StructureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StructureRepository::class)]
@@ -25,12 +27,14 @@ class Structure
     #[ORM\JoinColumn(nullable: true)]
     private ?Structure $parentStructure = null;
 
-    public function __construct(string $name, string $code, ?Structure $parentStructure)
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedStructure')]
+    private $events;
+
+    public function __construct()
     {
-        $this->name = $name;
-        $this->code = $code;
-        $this->parentStructure = $parentStructure;
+        $this->events = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -66,8 +70,42 @@ class Structure
         return $this->parentStructure;
     }
 
+    public function setParentStructure(?Structure $parentStructure): self
+    {
+        $this->parentStructure = $parentStructure;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->addConcernedStructure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeConcernedStructure($this);
+        }
+
+        return $this;
     }
 }

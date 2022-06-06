@@ -403,8 +403,12 @@ class StructureFixture extends Fixture
             } else {
                 $parent = null;
             }
-            $structure = new Structure($row['name'], $row['code'], $parent);
+            $structure = new Structure();
+            $structure->setName($row['name']);
+            $structure->setCode($row['code']);
+            $structure->setParentStructure($parent);
             $manager->persist($structure);
+            
             $structures[$row['code']] = $structure;
             $this->addReference(sprintf('structure-%s', $row['code']), $structure);
         }

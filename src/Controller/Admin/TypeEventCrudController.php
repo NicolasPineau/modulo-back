@@ -29,7 +29,7 @@ class TypeEventCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInPlural('Les types d\'évènements')
-            ->setEntityLabelInSingular('Type d\'évènement')
+            ->setEntityLabelInSingular('un type d\'évènement')
             ->setPageTitle("index", "Les types d'évènements");
     }
 
@@ -40,7 +40,7 @@ class TypeEventCrudController extends AbstractCrudController
             IdField::new('id')->hideOnIndex()->hideOnForm()->hideOnDetail(),
             TextField::new('name', 'Intitulé'),
             TextareaField::new('description'),
-            BooleanField::new('is_active', 'Active'),
+            BooleanField::new('is_active', 'Activé / Désactivé'),
             BooleanField::new('is_obligated', 'Visibilié obligatoire')
         ];
     }

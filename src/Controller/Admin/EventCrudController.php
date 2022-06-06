@@ -26,7 +26,7 @@ class EventCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInPlural('Les évènements')
-            ->setEntityLabelInSingular('Évènements')
+            ->setEntityLabelInSingular('un évènement')
             ->setPageTitle("index", "Les évènements");
     }
 
@@ -49,7 +49,11 @@ class EventCrudController extends AbstractCrudController
             DateTimeField::new('dateStart', 'Date et heure de début')->setFormat('dd.MM.yyyy à HH:mm'),
             DateTimeField::new('dateEnd', 'Date et heure de fin')->setFormat('dd.MM.yyyy à HH:mm'),
             TextEditorField::new('description', 'Description'),
-            BooleanField::new('active')
+            AssociationField::new('concernedStructure', 'Structures concernées')->hideOnIndex(),
+            AssociationField::new('concernedRole', 'Invitation par fonction')->hideOnIndex(),
+            AssociationField::new('concernedUser', 'Invitation nominative')->hideOnIndex(),
+            BooleanField::new('active', 'Activé / Désactivé'),
+
         ];
     }
 

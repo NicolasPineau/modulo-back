@@ -166,7 +166,11 @@ class RoleFixture extends Fixture
             if (!$ageSection instanceof AgeSection) {
                 throw new LogicException('Invalid reference to age section');
             }
-            $role = new Role($row['name'], $row['code'], $ageSection, $row['feminineName'] ?? null);
+            $role = new Role();
+            $role->setName($row['name']);
+            $role->setCode($row['code']);
+            $role->setAgeSection($ageSection);
+            $role->setFeminineName($row['feminineName'] ?? null);
             $manager->persist($role);
 
             $this->addReference(sprintf('role-%s-%s', $row['code'], $row['ageSection'] ?? ''), $role);

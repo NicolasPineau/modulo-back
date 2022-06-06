@@ -38,7 +38,7 @@ class ScopeCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInPlural('Scopes')
-            ->setEntityLabelInSingular('Scope')
+            ->setEntityLabelInSingular('un scope')
             ->setPageTitle("index", "Les scopes");
     }
 
@@ -58,7 +58,7 @@ class ScopeCrudController extends AbstractCrudController
             yield AssociationField::new('user', 'Utilisateur')->setCrudController(UserCrudController::class),
             yield AssociationField::new('structure', 'Structure')->setCrudController(StructureCrudController::class),
             yield AssociationField::new('role', 'Rôle')->setCrudController(RoleCrudController::class),
-            yield BooleanField::new('active'),
+            yield BooleanField::new('active', 'Activé / Désactivé'),
             yield DateTimeField::new('createdAt', 'Crée le ')->setTimezone('Europe/Paris')->hideOnForm()
         ];
     }
