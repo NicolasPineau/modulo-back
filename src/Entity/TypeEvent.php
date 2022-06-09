@@ -10,6 +10,7 @@ use Symfony\Component\Uid\Uuid;
 class TypeEvent
 {
     #[ORM\Id]
+
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: 'uuid', length: 96, unique: true)]
@@ -22,7 +23,6 @@ class TypeEvent
     private $isObligated;
 
     public function getId(): Uuid
-
     {
         return $this->id;
     }

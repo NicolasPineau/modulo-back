@@ -1,5 +1,31 @@
 {% extends 'base.html.twig' %}
 
+{% block bodyClass %}with-bg{% endblock %}
+
 {% block body %}
-  todo
+    <h1>
+        Bienvenue sur Modulo
+    </h1>
+    {% if not is_granted('ROLE_ADMIN') %}
+        <h2>
+            Veuillez choisir votre rôle !
+        </h2>
+        <div id="choice-scope">
+            {% for scope in scopes %}
+                <form method="post" action="{{ path('app_change_scope', {'scope_id': scope.id}) }}"
+                      onsubmit="return confirm('Voulez-vous vraiment changer votre rôle ?');">
+                    <button class="btn btn-primary">
+                        {{ scope.role.name }} -
+                        {{ scope.structure.name }}
+                    </button>
+                </form>
+            {% else %}
+                Vous n'avez pas de rôle attribué !
+            {% endfor %}
+        </div>
+    {% else %}
+        <h2>
+            Vous connecter en tant qu'administrateur.
+        </h2>
+    {% endif %}
 {% endblock %}

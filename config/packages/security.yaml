@@ -66,6 +66,16 @@ security:
         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/event, roles: [ IS_AUTHENTICATED_FULLY ] }
+        - { path: ^/event/new, roles: [ ROLE_ADMIN, ROLE_DT, ROLE_RPP, ROLE_RPAF, ROLE_Cleo-T, ROLE_Sec-t, ROLE_Treso-T,
+                                        ROLE_AP, ROLE_CDM-T, ROLE_RG, ROLE_RGA, ROLE_Sec, ROLE_Treso, ROLE_Cleo, ROLE_C,
+                                        ROLE_PAF, ROLE_RF, ROLE_ACCOCO, ROLE_CDM, ROLE_Impeesa ] }
+        - { path: ^/event/edit, roles: [ ROLE_ADMIN, ROLE_DT, ROLE_RPP, ROLE_RPAF, ROLE_Cleo-T, ROLE_Sec-t, ROLE_Treso-T,
+                                         ROLE_AP, ROLE_CDM-T, ROLE_RG, ROLE_RGA, ROLE_Sec, ROLE_Treso, ROLE_Cleo, ROLE_C,
+                                         ROLE_PAF, ROLE_RF, ROLE_ACCOCO, ROLE_CDM, ROLE_Impeesa ] }
+        - { path: ^/event/delete, roles: [ ROLE_ADMIN, ROLE_DT, ROLE_RPP, ROLE_RPAF, ROLE_Cleo-T, ROLE_Sec-t, ROLE_Treso-T,
+                                           ROLE_AP, ROLE_CDM-T, ROLE_RG, ROLE_RGA, ROLE_Sec, ROLE_Treso, ROLE_Cleo, ROLE_C,
+                                           ROLE_PAF, ROLE_RF, ROLE_ACCOCO, ROLE_CDM, ROLE_Impeesa ] }
 
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
