@@ -3,6 +3,9 @@
 namespace App\DataFixtures;
 
 use App\Entity\TypeEvent;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Persistence\ObjectManager;
+
 
 final class TypeEventFixture extends Fixture
 {
