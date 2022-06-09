@@ -14,4 +14,9 @@
 @import 'component/tables';
 
 @import 'page/login';
+
+.event-cards {
+    justify-content: center;
+    display: flex;
+}
 @import 'page/home';

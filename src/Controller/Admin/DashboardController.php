@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 
+use App\Entity\AgeSection;
 use App\Entity\Scope;
 use App\Entity\TypeEvent;
 use App\Entity\User;
@@ -11,10 +12,17 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Event;
+use App\Entity\Role;
+use App\Entity\Structure;
 
 
 class DashboardController extends AbstractDashboardController
 {
+    public static function getEntityFqcn(): string
+    {
+        return Event::class;
+    }
 
     #[Route('/admin', name: 'admin')]
     public function index(): Response
@@ -31,9 +39,13 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Accueil', 'fa fa-home');
-        yield MenuItem::linkToCrud('Les utilisateurs', 'fas fa-user', User::class);
-        yield MenuItem::linkToCrud('Les types d\'évenement', 'fas fa-calendar', TypeEvent::class);
+        yield MenuItem::linkToCrud('Les évenements', 'fas fa-calendar', Event::class);
+        yield MenuItem::linkToCrud('Les rôles', 'fas fa-tools', Role::class);
         yield MenuItem::linkToCrud('Les scopes', 'fas fa-map', Scope::class);
+        yield MenuItem::linkToCrud('Les structures', 'fas fa-building', Structure::class);
+        yield MenuItem::linkToCrud('Les types d\'évenement', 'fas fa-exclamation', TypeEvent::class);
+        yield MenuItem::linkToCrud('Les utilisateurs', 'fas fa-user', User::class);
+
+
     }
 }

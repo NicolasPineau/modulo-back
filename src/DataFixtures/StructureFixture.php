@@ -409,6 +409,7 @@ class StructureFixture extends Fixture
                 ->setParentStructure($parent)
             ;
             $manager->persist($structure);
+            
             $structures[$row['code']] = $structure;
             $this->addReference(sprintf('structure-%s', $row['code']), $structure);
         }

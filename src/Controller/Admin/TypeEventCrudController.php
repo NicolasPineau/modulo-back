@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -28,7 +29,7 @@ class TypeEventCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInPlural('Les types d\'évènements')
-            ->setEntityLabelInSingular('Type d\'évènement')
+            ->setEntityLabelInSingular('un type d\'évènement')
             ->setPageTitle("index", "Les types d'évènements");
     }
 
@@ -36,9 +37,11 @@ class TypeEventCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id')->hideOnIndex()->hideOnForm(),
-            TextField::new('name'),
-            BooleanField::new('is_obligated')
+            IdField::new('id')->hideOnIndex()->hideOnForm()->hideOnDetail(),
+            TextField::new('name', 'Intitulé'),
+            TextareaField::new('description'),
+            BooleanField::new('is_active', 'Activé / Désactivé'),
+            BooleanField::new('is_obligated', 'Visibilié obligatoire')
         ];
     }
 

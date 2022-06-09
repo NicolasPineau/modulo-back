@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Enum\Gender;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+
 final class UserFixture extends GeneratedFixture
 {
     public const REFERENCE_NAME = User::class;

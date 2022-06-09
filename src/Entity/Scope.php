@@ -30,6 +30,9 @@ class Scope
     #[ORM\Column(type: 'boolean')]
     private bool $active;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
     #[Pure]
     public function __construct()
     {
@@ -45,7 +48,6 @@ class Scope
     {
         return $this->user;
     }
-
 
     public function setUser(User $user): self
     {
@@ -74,7 +76,6 @@ class Scope
     public function setRole(Role $role): self
     {
         $this->role = $role;
-
         return $this;
     }
 
@@ -86,6 +87,17 @@ class Scope
     public function setActive(bool $active): self
     {
         $this->active = $active;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

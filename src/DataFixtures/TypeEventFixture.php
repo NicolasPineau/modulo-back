@@ -33,6 +33,7 @@ final class TypeEventFixture extends Fixture
             $typeEvent1 = new TypeEvent();
             $typeEvent1
                 ->setName($type['name'])
+                ->setIsActive(true)
                 ->setIsObligated($type['isObligated']);
 
             $manager->persist($typeEvent1);

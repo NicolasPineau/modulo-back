@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\StructureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -27,8 +29,13 @@ class Structure
     #[ORM\JoinColumn(nullable: true)]
     private ?Structure $parentStructure;
 
+
+    #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedStructure')]
+    private $events;
+
     public function __construct()
     {
+        $this->events = new ArrayCollection();
         $this->parentStructure = null;
     }
 
@@ -69,6 +76,40 @@ class Structure
     public function setParentStructure(?Structure $parentStructure): self
     {
         $this->parentStructure = $parentStructure;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        $this->parentStructure = $parentStructure;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->addConcernedStructure($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            $event->removeConcernedStructure($this);
+        }
 
         return $this;
     }

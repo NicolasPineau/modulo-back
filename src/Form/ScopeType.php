@@ -18,45 +18,44 @@ class ScopeType extends AbstractType
     {
         $builder
             ->add('active')
-            ->add('user',EntityType::class,[
-                'class'=>User::class,
-                'query_builder'=>function(EntityRepository $er){
+            ->add('user', EntityType::class, [
+                'class' => User::class,
+                'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('u')
-                        ->orderBy('u.lastName','ASC');
+                        ->orderBy('u.firstName', 'ASC');
                 },
-                'choice_label'=> 'lastName',
-                'required'=> true,
+                'choice_label' => 'lastName',
+                'required' => true,
                 'mapped' => $options['mapped'],
             ])
-            ->add('structure', EntityType::class,[
-                'class'=>Structure::class,
-                'query_builder'=>function(EntityRepository $er){
+            ->add('structure', EntityType::class, [
+                'class' => Structure::class,
+                'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
-                        ->orderBy('s.name','ASC');
+                        ->orderBy('s.name', 'ASC');
                 },
-                'choice_label'=>'name',
-                'required'=>true,
+                'choice_label' => 'name',
+                'required' => true,
                 'mapped' => $options['mapped'],
             ])
-            ->add('role', EntityType::class,[
-                'class'=>Role::class,
-                'query_builder'=>function(EntityRepository $er){
+            ->add('role', EntityType::class, [
+                'class' => Role::class,
+                'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('r')
-                        ->orderBy('r.name','ASC');
+                        ->orderBy('r.name', 'ASC');
                 },
-                'choice_label'=>'name',
-                'required'=>true,
+                'choice_label' => 'name',
+                'required' => true,
                 'mapped' => $options['mapped'],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Scope::class,
-            'mapped'=> false,
-            'attr'=>['id'=>'form_scope']
+            'mapped' => false,
+            'attr' => ['id' => 'form_scope']
         ]);
     }
 }

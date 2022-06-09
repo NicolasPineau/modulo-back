@@ -3,29 +3,17 @@
 {% block bodyClass %}with-bg{% endblock %}
 
 {% block body %}
-    <h1>
-        Bienvenue sur Modulo
-    </h1>
-    {% if not is_granted('ROLE_ADMIN') %}
-        <h2>
-            Veuillez choisir votre rôle !
-        </h2>
-        <div id="choice-scope">
-            {% for scope in scopes %}
-                <form method="post" action="{{ path('app_change_scope', {'scope_id': scope.id}) }}"
-                      onsubmit="return confirm('Voulez-vous vraiment changer votre rôle ?');">
-                    <button class="btn btn-primary">
-                        {{ scope.role.name }} -
-                        {{ scope.structure.name }}
-                    </button>
-                </form>
-            {% else %}
-                Vous n'avez pas de rôle attribué !
-            {% endfor %}
-        </div>
-    {% else %}
-        <h2>
-            Vous connecter en tant qu'administrateur.
-        </h2>
-    {% endif %}
+    <h1>Bienvenues !</h1>
+    <div class="event-cards">
+        {% for event in events %}
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.title }}</h5>
+                    <h6 class="card-text">{{ event.description }}</h6>
+                    <h6 class="card-text">Début : {{ event.dateStart ? event.dateStart|date('d/m/Y à h:m') : ' ' }}</h6>
+                    <h6 class="card-text">Fin : {{ event.dateEnd ? event.dateEnd|date('d/m/Y à h:m') : ' ' }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
