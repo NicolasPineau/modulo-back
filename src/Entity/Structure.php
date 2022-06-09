@@ -7,15 +7,17 @@ use App\Repository\StructureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: StructureRepository::class)]
 #[ApiResource]
 class Structure
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $name;
@@ -25,7 +27,8 @@ class Structure
 
     #[ORM\ManyToOne(targetEntity: Structure::class)]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Structure $parentStructure = null;
+    private ?Structure $parentStructure;
+
 
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedStructure')]
     private $events;
@@ -33,10 +36,10 @@ class Structure
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->parentStructure = null;
     }
 
-
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
@@ -79,7 +82,9 @@ class Structure
 
     public function __toString(): string
     {
-        return $this->name;
+        $this->parentStructure = $parentStructure;
+
+        return $this;
     }
 
     /**

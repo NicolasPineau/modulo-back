@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -16,6 +17,7 @@ class Event
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+
     private ?string $title;
 
     #[ORM\Column(type: 'datetime')]
@@ -48,7 +50,7 @@ class Event
         $this->concernedRole = new ArrayCollection();
         $this->concernedUser = new ArrayCollection();
     }
-
+  
     public function getId(): ?int
     {
         return $this->id;
@@ -66,24 +68,25 @@ class Event
         return $this;
     }
 
-    public function getDateStart(): ?\DateTimeInterface
+
+    public function getDateStart(): ?DateTimeInterface
     {
         return $this->dateStart;
     }
 
-    public function setDateStart(\DateTimeInterface $dateStart): self
+    public function setDateStart(DateTimeInterface $dateStart): self
     {
         $this->dateStart = $dateStart;
 
         return $this;
     }
 
-    public function getDateEnd(): ?\DateTimeInterface
+    public function getDateEnd(): ?DateTimeInterface
     {
         return $this->dateEnd;
     }
 
-    public function setDateEnd(\DateTimeInterface $dateEnd): self
+    public function setDateEnd(DateTimeInterface $dateEnd): self
     {
         $this->dateEnd = $dateEnd;
 
@@ -101,7 +104,7 @@ class Event
 
         return $this;
     }
-
+  
     public function getTypeEvent(): ?TypeEvent
     {
         return $this->typeEvent;
@@ -197,5 +200,4 @@ class Event
 
         return $this;
     }
-
 }

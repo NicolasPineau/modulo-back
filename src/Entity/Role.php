@@ -7,16 +7,17 @@ use App\Repository\RoleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[ApiResource]
 class Role
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $name;
@@ -25,13 +26,13 @@ class Role
     private string $code;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private ?string $feminineName = null;
+    private ?string $feminineName;
 
     #[ORM\ManyToOne(targetEntity: AgeSection::class, cascade: ['persist'])]
     private AgeSection $ageSection;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
-    private $icon;
+    private ?string $icon;
 
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedRole')]
     private $events;
@@ -41,8 +42,12 @@ class Role
         $this->events = new ArrayCollection();
     }
 
+    public function __construct()
+    {
+        $this->feminineName = null;
+    }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
