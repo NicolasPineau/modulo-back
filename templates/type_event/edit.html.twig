@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le type d'évènement{% endblock %}
+
+{% block body %}
+    <h1>Modifier le type d'évènement</h1>
+
+    {{ include('type_event/_form.html.twig', {'button_label': 'Modifier'}) }}
+
+    <a href="{{ path('app_type_event_index') }}">Retour à la liste</a>
+
+{% endblock %}

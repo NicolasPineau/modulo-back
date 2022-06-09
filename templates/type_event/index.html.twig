@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les types d'évènements{% endblock %}
+
+{% block body %}
+    <h1>Les types d'évènements</h1>
+    <div class="button-create">
+    <a class="btn btn-primary" href="{{ path('app_type_event_new') }}">Ajouter un type d'évènement</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Aperçu</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for type_event in type_events %}
+            <tr>
+                <td>{{ type_event.name }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ path('app_type_event_show', {'id': type_event.id}) }}"><i class="fa fa-file"></i></a>
+                </td>
+                <td>
+                    <a class="btn btn-info" href="{{ path('app_type_event_edit', {'id': type_event.id}) }}"><i class="fa fa-pen"></i></a>
+                </td>
+                <td>
+                    {{ include('type_event/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+{% endblock %}

@@ -19,14 +19,13 @@ class ScopeRepository extends ServiceEntityRepository
         parent::__construct($registry, Scope::class);
     }
 
-    public function findByUser($userId): array
-    {
+    public function findScopebyUser($userId){
         return $this->createQueryBuilder('s')
-            ->leftJoin('s.user', 'u')
-            ->andWhere('u.id = :val')
-            ->setParameter('val', $userId)
-            ->orderBy('s.id', 'ASC')
-            ->getQuery()
-            ->getResult();
+        ->leftJoin('s.user','u')
+        ->andWhere('u.id = :userId')
+        ->setParameter('userId',$userId)
+        ->orderBy('s.id','ASC')
+        ->getQuery()
+        ->getResult();
     }
 }

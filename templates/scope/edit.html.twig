@@ -1,13 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Scope{% endblock %}
+{% block title %}Modifier le scope{% endblock %}
 
 {% block body %}
-    <h1>Edit Scope</h1>
+    <h1>Modifier le scope</h1>
 
-    {{ include('scope/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="container-fluid">
+        {{ include('scope/_form.html.twig') }}
+    </div>
 
-    <a href="{{ path('app_scope_index') }}">back to list</a>
-
-    {{ include('scope/_delete_form.html.twig') }}
+    <div class="row">
+        <div>
+            <button class="btn-create" form="form_scope">Modification</button>
+        </div>
+        <div>
+            <a href="{{ path('app_scope_index') }}">Revenir à la liste</a>
+        </div>
+    </div>
 {% endblock %}
