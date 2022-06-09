@@ -1,4 +1,33 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+<div id="screen-left">
+    {{ form_label(form.uuid) }}
+    <div>
+        {{ form_widget(form.uuid) }}
+    </div>
+    {{ form_label(form.email) }}
+    <div>
+        {{ form_widget(form.email) }}
+    </div>
+    {{ form_label(form.password) }}
+    <div>
+        {{ form_widget(form.password) }}
+    </div>
+
+</div>
+<div id="screen-right">
+    {{ form_label(form.lastName) }}
+    <div>
+        {{ form_widget(form.lastName) }}
+    </div>
+    {{ form_label(form.firstName) }}
+    <div>
+        {{ form_widget(form.firstName) }}
+    </div>
+    {{ form_label(form.genre) }}
+    <div>
+        {{ form_widget(form.genre) }}
+    </div>
+</div>
+
+
 {{ form_end(form) }}

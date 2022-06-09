@@ -6,11 +6,11 @@ use App\Entity\TypeEvent;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class TypeEventFixture extends Fixture
+
+final class TypeEventFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-
         $types = [
             ['name' => "Assemblée territoriale", 'isObligated' => true],
             ['name' => "Conseil territorial", 'isObligated' => false],
@@ -39,6 +39,4 @@ class TypeEventFixture extends Fixture
             $this->addReference('type_event_' . $i++, $typeEvent1);
         }
 
-        $manager->flush();
-    }
 }

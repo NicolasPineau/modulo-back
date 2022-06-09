@@ -16,8 +16,21 @@ $button-height: 50px;
     align-items: center;
     justify-content: center;
 
+
     &:hover {
         box-shadow: inset 0 0 0 $button-height $color-bg-primary;
         color: $color-text-light;
     }
 }
+
+div.button-create {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-delete button
+{
+    width: 100%;
+}
+
+

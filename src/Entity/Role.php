@@ -5,16 +5,17 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\Pure;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: RoleRepository::class)]
 #[ApiResource]
 class Role
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 100)]
     private string $name;
@@ -23,23 +24,20 @@ class Role
     private string $code;
 
     #[ORM\Column(type: 'string', length: 100, nullable: true)]
-    private ?string $feminineName = null;
+    private ?string $feminineName;
 
-    #[ORM\ManyToOne(targetEntity: AgeSection::class)]
+    #[ORM\ManyToOne(targetEntity: AgeSection::class, cascade: ['persist'])]
     private AgeSection $ageSection;
 
     #[ORM\Column(type: 'string', length: 50, nullable: true)]
     private ?string $icon;
 
-    #[Pure] public function __construct(string $name, string $code, AgeSection $ageSection, ?string $feminineName = null)
+    public function __construct()
     {
-        $this->name = $name;
-        $this->code = $code;
-        $this->feminineName = $feminineName;
-        $this->ageSection = $ageSection;
+        $this->feminineName = null;
     }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
@@ -102,5 +100,9 @@ class Role
         $this->icon = $icon;
 
         return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
