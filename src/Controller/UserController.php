@@ -2,31 +2,41 @@
 
 namespace App\Controller;
 
+use App\Entity\Scope;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\ScopeRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 #[Route('/user')]
 class UserController extends AbstractController
 {
     #[Route('/', name: 'app_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, PaginatorInterface $paginator, Request $request): Response
     {
+        $users = $userRepository->findAll();
+
+        $users = $paginator->paginate(
+            $users,
+            $request->query->getInt('page',1),20
+
+        );
+
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
         ]);
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $user = new User();
+        $user = new User('','','','','');
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -70,9 +80,17 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager, ScopeRepository $scopeRepository): Response
     {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+
+            $scopes = $scopeRepository->findScopebyUser($user->getId());
+            if($scopes)
+            {
+                foreach ($scopes as $scope){
+                    $entityManager->remove($scope);
+                }
+            }
             $entityManager->remove($user);
             $entityManager->flush();
         }

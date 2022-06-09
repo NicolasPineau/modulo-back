@@ -18,13 +18,13 @@ class Scope
     #[ORM\Column(type: 'uuid', length: 96, unique: true)]
     private Uuid $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Structure::class)]
+    #[ORM\ManyToOne(targetEntity: Structure::class, cascade: ['persist'])]
     private Structure $structure;
 
-    #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\ManyToOne(targetEntity: Role::class, cascade: ['persist'])]
     private Role $role;
 
     #[ORM\Column(type: 'boolean')]
@@ -45,6 +45,7 @@ class Scope
     {
         return $this->user;
     }
+
 
     public function setUser(User $user): self
     {
