@@ -40,12 +40,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private string $lastName;
 
-    #[ORM\OneToMany(targetEntity: Scope::class, cascade: ['persist'],mappedBy: "user",orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: "user", targetEntity: Scope::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $scopes;
 
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedUser')]
     private $events;
-  
+
     #[ORM\Column(type: 'string', enumType: Gender::class)]
     private Gender $genre;
 
@@ -58,7 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
-  
+
     public function getEmail(): string
     {
         return $this->email;
@@ -115,6 +115,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getGenre(): Gender
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(Gender $genre): User
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
+    }
+
+    public function getFullName(): string
+    {
+        return $this->getFirstName() . ' ' . $this->getLastName();
+    }
+
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -137,32 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastName = $lastName;
 
         return $this;
-    }
-
-    public function getGenre(): Gender
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(Gender $genre): User
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-
-    public function getFullName(): string
-    {
-        return $this->getFirstName().' '.$this->getLastName();
-    }
-
-    public function eraseCredentials()
-    {
-    }
-
-    public function __toString(): string
-    {
-        return $this->getFullName();
     }
 
     /**

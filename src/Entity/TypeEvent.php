@@ -12,7 +12,6 @@ use Symfony\Component\Uid\Uuid;
 class TypeEvent
 {
     #[ORM\Id]
-
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     #[ORM\Column(type: 'uuid', length: 96, unique: true)]
@@ -22,16 +21,16 @@ class TypeEvent
     private string $name;
 
     #[ORM\Column(type: 'boolean')]
-    private $isObligated;
+    private ?bool $isObligated;
 
     #[ORM\OneToMany(mappedBy: 'typeEvent', targetEntity: Event::class)]
-    private $events;
+    private ArrayCollection $events;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $description;
+    private ?string $description;
 
     #[ORM\Column(type: 'boolean')]
-    private $isActive;
+    private ?bool $isActive;
 
     public function __construct()
     {

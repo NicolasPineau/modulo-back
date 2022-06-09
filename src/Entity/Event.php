@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
@@ -17,14 +17,13 @@ class Event
     private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-
     private ?string $title;
 
     #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $dateStart;
+    private ?DateTimeInterface $dateStart;
 
     #[ORM\Column(type: 'datetime')]
-    private ?\DateTimeInterface $dateEnd;
+    private ?DateTimeInterface $dateEnd;
 
     #[ORM\Column(type: 'text')]
     private ?string $description;
@@ -33,7 +32,7 @@ class Event
     private ?TypeEvent $typeEvent;
 
     #[ORM\Column(type: 'boolean')]
-    private $active;
+    private ?bool $isActive;
 
     #[ORM\ManyToMany(targetEntity: Structure::class, inversedBy: 'events')]
     private $concernedStructure;
@@ -50,7 +49,7 @@ class Event
         $this->concernedRole = new ArrayCollection();
         $this->concernedUser = new ArrayCollection();
     }
-  
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,7 +103,7 @@ class Event
 
         return $this;
     }
-  
+
     public function getTypeEvent(): ?TypeEvent
     {
         return $this->typeEvent;
@@ -117,14 +116,14 @@ class Event
         return $this;
     }
 
-    public function getActive(): ?bool
+    public function getIsActive(): ?bool
     {
-        return $this->active;
+        return $this->isActive;
     }
 
-    public function setActive(bool $active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->active = $active;
+        $this->isActive = $isActive;
 
         return $this;
     }

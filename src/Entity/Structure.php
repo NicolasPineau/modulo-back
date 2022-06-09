@@ -29,7 +29,6 @@ class Structure
     #[ORM\JoinColumn(nullable: true)]
     private ?Structure $parentStructure;
 
-
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedStructure')]
     private $events;
 
@@ -74,13 +73,6 @@ class Structure
     }
 
     public function setParentStructure(?Structure $parentStructure): self
-    {
-        $this->parentStructure = $parentStructure;
-
-        return $this;
-    }
-
-    public function __toString(): string
     {
         $this->parentStructure = $parentStructure;
 

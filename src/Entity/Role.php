@@ -40,10 +40,6 @@ class Role
     public function __construct()
     {
         $this->events = new ArrayCollection();
-    }
-
-    public function __construct()
-    {
         $this->feminineName = null;
     }
 
