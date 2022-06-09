@@ -3,11 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\TypeEvent;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use LogicException;
 
-class TypeEventFixture extends Fixture
+final class TypeEventFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
@@ -39,6 +36,4 @@ class TypeEventFixture extends Fixture
             $this->addReference('type_event_' . $i++, $typeEvent1);
         }
 
-        $manager->flush();
-    }
 }

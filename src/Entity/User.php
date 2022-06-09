@@ -2,29 +2,27 @@
 
 namespace App\Entity;
 
+use App\Enum\Gender;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
-#[UniqueEntity(fields: ['uuid'], message: 'There is already an account with this uuid')]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'user.email.already_exist')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";
     const ROLE_USER = "ROLE_USER";
 
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
-
-    #[ORM\Column(type: 'string', length: 96, unique: true)]
-    private string $uuid;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 200, unique: true)]
     private string $email;
@@ -41,29 +39,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string')]
     private string $lastName;
 
-    #[ORM\Column(type: 'string', length: 1)]
-    private string $genre;
-
     #[ORM\OneToMany(targetEntity: Scope::class, cascade: ['persist'],mappedBy: "user",orphanRemoval: true)]
     private Collection $scopes;
 
-    public function getId(): ?int
+    #[ORM\Column(type: 'string', enumType: Gender::class)]
+    private Gender $genre;
+
+    public function getId(): Uuid
     {
         return $this->id;
     }
-
-    public function getUuid(): string
-    {
-        return $this->uuid;
-    }
-
-    public function setUuid(?string $uuid):self
-    {
-        $this->uuid =$uuid;
-
-        return $this;
-    }
-
+  
     public function getEmail(): string
     {
         return $this->email;
@@ -83,7 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->uuid;
+        return $this->id;
     }
 
     /**
@@ -144,12 +130,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGenre(): string
+    public function getGenre(): Gender
     {
         return $this->genre;
     }
 
-    public function setGenre(string $genre): User
+    public function setGenre(Gender $genre): User
     {
         $this->genre = $genre;
 
@@ -158,7 +144,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFullName(): string
     {
-        return trim(sprintf('%s %s', $this->getFirstName(), $this->getLastName()));
+        return $this->getFirstName().' '.$this->getLastName();
     }
 
     public function eraseCredentials()
