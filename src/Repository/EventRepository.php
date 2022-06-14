@@ -49,7 +49,7 @@ class EventRepository extends ServiceEntityRepository
     public function findActiveProject(): array
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.active = :active')
+            ->andWhere('p.isActive = :active')
             ->setParameter('active', 1)
             ->getQuery()
             ->getResult();
