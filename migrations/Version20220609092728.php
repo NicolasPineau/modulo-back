@@ -40,7 +40,6 @@ final class Version20220609092728 extends AbstractMigration
         $this->addSql('DROP TABLE event_role');
         $this->addSql('DROP TABLE event_user');
         $this->addSql('DROP TABLE user');
-        $this->addSql('ALTER TABLE event CHANGE type_event_id type_event_id INT DEFAULT NULL');
         $this->addSql('ALTER TABLE role DROP FOREIGN KEY FK_57698A6AD3F77268');
         $this->addSql('ALTER TABLE scope DROP FOREIGN KEY FK_AF55D32534008B');
         $this->addSql('ALTER TABLE scope DROP FOREIGN KEY FK_AF55D3D60322AC');

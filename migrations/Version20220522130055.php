@@ -31,7 +31,6 @@ final class Version20220522130055 extends AbstractMigration
         $this->addSql('ALTER TABLE scope ADD CONSTRAINT FK_AF55D32534008B FOREIGN KEY (structure_id) REFERENCES structure (id)');
         $this->addSql('ALTER TABLE scope ADD CONSTRAINT FK_AF55D3D60322AC FOREIGN KEY (role_id) REFERENCES role (id)');
         $this->addSql('ALTER TABLE structure ADD CONSTRAINT FK_6F0137EA755A5DA5 FOREIGN KEY (parent_structure_id) REFERENCES structure (id)');
-        $this->addSql('ALTER TABLE event ADD CONSTRAINT FK_TF203YEA785B5D77 FOREIGN KEY (type_event_id) REFERENCES type_event (id)');
     }
 
     public function down(Schema $schema): void
@@ -42,7 +41,7 @@ final class Version20220522130055 extends AbstractMigration
         $this->addSql('ALTER TABLE scope DROP FOREIGN KEY FK_AF55D32534008B');
         $this->addSql('ALTER TABLE structure DROP FOREIGN KEY FK_6F0137EA755A5DA5');
         $this->addSql('ALTER TABLE scope DROP FOREIGN KEY FK_AF55D3A76ED395');
-        $this->addSql('ALTER TABLE event DROP FOREIGN KEY FK_AF55D3A76ED395');
+        $this->addSql('ALTER TABLE event DROP FOREIGN KEY FK_TF203YEA785B5D77');
         $this->addSql('DROP TABLE age_section');
         $this->addSql('DROP TABLE role');
         $this->addSql('DROP TABLE scope');
