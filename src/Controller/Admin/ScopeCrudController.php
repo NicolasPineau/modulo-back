@@ -2,15 +2,9 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Role;
-use App\Entity\Structure;
 use App\Entity\Scope;
-use App\Entity\User;
-use App\Repository\RoleRepository;
-use App\Repository\StructureRepository;
-use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
+use DateTime;
+use DateTimeZone;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -45,7 +39,7 @@ class ScopeCrudController extends AbstractCrudController
     public function createEntity(string $entityFqcn)
     {
         $scope = new Scope();
-        $scope->setCreatedAt(new \DateTime('now', new \DateTimeZone('Europe/Paris')));
+        $scope->setCreatedAt(new DateTime('now', new DateTimeZone('Europe/Paris')));
 
         return $scope;
     }
@@ -58,7 +52,7 @@ class ScopeCrudController extends AbstractCrudController
             yield AssociationField::new('user', 'Utilisateur')->setCrudController(UserCrudController::class),
             yield AssociationField::new('structure', 'Structure')->setCrudController(StructureCrudController::class),
             yield AssociationField::new('role', 'Rôle')->setCrudController(RoleCrudController::class),
-            yield BooleanField::new('active', 'Activé / Désactivé'),
+            yield BooleanField::new('isActive', 'Activé / Désactivé'),
             yield DateTimeField::new('createdAt', 'Crée le ')->setTimezone('Europe/Paris')->hideOnForm()
         ];
     }
