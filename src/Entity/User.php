@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";
@@ -45,15 +47,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 1)]
     private string $genre;
 
-    #[ORM\OneToMany(targetEntity: Scope::class, cascade: ['persist'],mappedBy: "user",orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Scope::class, cascade: ['persist'], mappedBy: "user", orphanRemoval: true)]
     private Collection $scopes;
 
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedUser')]
     private $events;
+    
+    #[ORM\ManyToMany(targetEntity: EventInvitation::class, mappedBy: 'recipient')]
+    private $eventInvitations;
 
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->eventInvitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,9 +72,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->uuid;
     }
 
-    public function setUuid(?string $uuid):self
+    public function setUuid(?string $uuid): self
     {
-        $this->uuid =$uuid;
+        $this->uuid = $uuid;
 
         return $this;
     }
@@ -92,7 +98,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->uuid;
+        return (string)$this->uuid;
     }
 
     /**
@@ -129,6 +135,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getGenre(): string
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(string $genre): User
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
+    }
+
+    public function getFullName(): string
+    {
+        return trim(sprintf('%s %s', $this->getFirstName(), $this->getLastName()));
+    }
+
     public function getFirstName(): string
     {
         return $this->firstName;
@@ -151,32 +183,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastName = $lastName;
 
         return $this;
-    }
-
-    public function getGenre(): string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(string $genre): User
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-
-    public function getFullName(): string
-    {
-        return trim(sprintf('%s %s', $this->getFirstName(), $this->getLastName()));
-    }
-
-    public function eraseCredentials()
-    {
-    }
-
-    public function __toString(): string
-    {
-        return $this->getFullName();
     }
 
     /**
@@ -205,4 +211,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, EventInvitation>
+     */
+    public function getEventInvitations(): Collection
+    {
+        return $this->eventInvitations;
+    }
+
+    public function addEventInvitation(EventInvitation $eventInvitation): self
+    {
+        if (!$this->eventInvitations->contains($eventInvitation)) {
+            $this->eventInvitations[] = $eventInvitation;
+            $eventInvitation->addRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventInvitation(EventInvitation $eventInvitation): self
+    {
+        if ($this->eventInvitations->removeElement($eventInvitation)) {
+            $eventInvitation->removeRecipient($this);
+        }
+
+        return $this;
+    }
+
+
 }

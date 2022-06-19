@@ -2,12 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TypeEventRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TypeEventRepository::class)]
+#[ApiResource]
 class TypeEvent
 {
     #[ORM\Id]
@@ -30,9 +32,13 @@ class TypeEvent
     #[ORM\Column(type: 'boolean')]
     private $isActive;
 
+    #[ORM\OneToMany(mappedBy: 'typeEvent', targetEntity: TypeEventAuthorization::class)]
+    private $typeEventAuthorizations;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->typeEventAuthorizations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +125,36 @@ class TypeEvent
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TypeEventAuthorization>
+     */
+    public function getTypeEventAuthorizations(): Collection
+    {
+        return $this->typeEventAuthorizations;
+    }
+
+    public function addTypeEventAuthorization(TypeEventAuthorization $typeEventAuthorization): self
+    {
+        if (!$this->typeEventAuthorizations->contains($typeEventAuthorization)) {
+            $this->typeEventAuthorizations[] = $typeEventAuthorization;
+            $typeEventAuthorization->setTypeEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTypeEventAuthorization(TypeEventAuthorization $typeEventAuthorization): self
+    {
+        if ($this->typeEventAuthorizations->removeElement($typeEventAuthorization)) {
+            // set the owning side to null (unless already changed)
+            if ($typeEventAuthorization->getTypeEvent() === $this) {
+                $typeEventAuthorization->setTypeEvent(null);
+            }
+        }
 
         return $this;
     }

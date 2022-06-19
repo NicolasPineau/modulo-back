@@ -4,8 +4,12 @@ namespace App\Controller\Admin;
 
 
 use App\Entity\AgeSection;
+use App\Entity\Credential;
+use App\Entity\EventInvitation;
+use App\Entity\Feature;
 use App\Entity\Scope;
 use App\Entity\TypeEvent;
+use App\Entity\TypeEventAuthorization;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -40,12 +44,17 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToCrud('Les évenements', 'fas fa-calendar', Event::class);
+        yield MenuItem::linkToCrud('Les fonctionnalités', 'fas fa-key', Feature::class);
+        yield MenuItem::linkToCrud('Les invitations', 'fas fa-flag', EventInvitation::class);
         yield MenuItem::linkToCrud('Les rôles', 'fas fa-tools', Role::class);
         yield MenuItem::linkToCrud('Les scopes', 'fas fa-map', Scope::class);
         yield MenuItem::linkToCrud('Les structures', 'fas fa-building', Structure::class);
         yield MenuItem::linkToCrud('Les types d\'évenement', 'fas fa-exclamation', TypeEvent::class);
         yield MenuItem::linkToCrud('Les utilisateurs', 'fas fa-user', User::class);
-
+        yield MenuItem::subMenu('Les habilitations', 'fa fa-tools')->setSubItems([
+            MenuItem::linkToCrud('Habilitations à des fonctionnalités', 'fa fa-tools', Credential::class),
+            MenuItem::linkToCrud('Habilitations à des types d\'évènement', 'fa fa-tools', TypeEventAuthorization::class),
+        ]);
 
     }
 }

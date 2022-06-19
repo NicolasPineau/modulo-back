@@ -36,9 +36,17 @@ class Role
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedRole')]
     private $events;
 
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: Credential::class)]
+    private $credentials;
+
+    #[ORM\OneToMany(mappedBy: 'role', targetEntity: TypeEventAuthorization::class)]
+    private $typeEventAuthorizations;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->credentials = new ArrayCollection();
+        $this->typeEventAuthorizations = new ArrayCollection();
     }
 
 
@@ -138,4 +146,66 @@ class Role
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Credential>
+     */
+    public function getCredentials(): Collection
+    {
+        return $this->credentials;
+    }
+
+    public function addCredential(Credential $credential): self
+    {
+        if (!$this->credentials->contains($credential)) {
+            $this->credentials[] = $credential;
+            $credential->setRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCredential(Credential $credential): self
+    {
+        if ($this->credentials->removeElement($credential)) {
+            // set the owning side to null (unless already changed)
+            if ($credential->getRole() === $this) {
+                $credential->setRole(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TypeEventAuthorization>
+     */
+    public function getTypeEventAuthorizations(): Collection
+    {
+        return $this->typeEventAuthorizations;
+    }
+
+    public function addTypeEventAuthorization(TypeEventAuthorization $typeEventAuthorization): self
+    {
+        if (!$this->typeEventAuthorizations->contains($typeEventAuthorization)) {
+            $this->typeEventAuthorizations[] = $typeEventAuthorization;
+            $typeEventAuthorization->setRole($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTypeEventAuthorization(TypeEventAuthorization $typeEventAuthorization): self
+    {
+        if ($this->typeEventAuthorizations->removeElement($typeEventAuthorization)) {
+            // set the owning side to null (unless already changed)
+            if ($typeEventAuthorization->getRole() === $this) {
+                $typeEventAuthorization->setRole(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

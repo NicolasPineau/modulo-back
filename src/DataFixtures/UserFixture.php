@@ -79,9 +79,6 @@ class UserFixture extends Fixture
                         throw new LogicException();
                     }
 
-                    $scope = new Scope($user, $structure2, $role2);
-                    $scope->setCreatedAt(new \DateTime('now'));
-                    $manager->persist($scope);
                 }
             }
         }

@@ -12,7 +12,7 @@ class EventFixture extends Fixture
     public function load(ObjectManager $manager)
     {
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 1; $i++) {
             $nb = random_int(0, 13);
             /** @var TypeEvent $typeEvent */
             $typeEvent = $this->getReference('type_event_' . $nb);
