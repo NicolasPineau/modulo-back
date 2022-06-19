@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Enum\Gender;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +15,7 @@ use Symfony\Component\Uid\Uuid;
 
 #[UniqueEntity(fields: ['email'], message: 'user.email.already_exist')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";
@@ -52,6 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->scopes = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -189,6 +192,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $event->removeConcernedUser($this);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getScopes(): Collection
+    {
+        return $this->scopes;
+    }
+
+    public function addScope(Scope $scope): self
+    {
+        if (!$this->scopes->contains($scope)) {
+            $this->scopes[] = $scope;
+            $scope->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeScope(Scope $scope): self
+    {
+        if ($this->events->removeElement($scope)) {
+            if ($scope->getUser() === $this) {
+                $scope->setUser(null);
+            }
+        }
         return $this;
     }
 }

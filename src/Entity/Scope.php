@@ -19,7 +19,7 @@ class Scope
     #[ORM\Column(type: 'uuid', length: 96, unique: true)]
     private Uuid $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'scopes')]
     private User $user;
 
     #[ORM\ManyToOne(targetEntity: Structure::class, cascade: ['persist'])]
@@ -29,7 +29,7 @@ class Scope
     private Role $role;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $active;
+    private bool $isActive;
 
     #[ORM\Column(type: 'datetime')]
     private ?DateTime $createdAt;
@@ -37,7 +37,7 @@ class Scope
     #[Pure]
     public function __construct()
     {
-        $this->active = true;
+        $this->isActive = true;
     }
 
     public function getId(): Uuid
@@ -80,14 +80,14 @@ class Scope
         return $this;
     }
 
-    public function isActive(): bool
+    public function getIsActive(): bool
     {
-        return $this->active;
+        return $this->isActive;
     }
 
-    public function setActive(bool $active): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->active = $active;
+        $this->isActive = $isActive;
         return $this;
     }
 
