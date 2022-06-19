@@ -7,23 +7,27 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>DateStart</th>
-                <th>DateEnd</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Type Event</th>
+            <th>DateStart</th>
+            <th>DateEnd</th>
+            <th>Description</th>
+            <th>Active</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for event in events %}
             <tr>
                 <td>{{ event.id }}</td>
-                <td>{{ event.name }}</td>
+                <td>{{ event.title }}</td>
+                <td>{{ event.typeEvent.name }}</td>
                 <td>{{ event.dateStart ? event.dateStart|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ event.dateEnd ? event.dateEnd|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ event.description }}</td>
+                <td>{{ event.active ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
                     <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
@@ -31,7 +35,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="7">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

@@ -45,11 +45,15 @@ class Event
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
     private $concernedUser;
 
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: EventInvitation::class)]
+    private $eventInvitations;
+
     public function __construct()
     {
         $this->concernedStructure = new ArrayCollection();
         $this->concernedRole = new ArrayCollection();
         $this->concernedUser = new ArrayCollection();
+        $this->eventInvitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -201,4 +205,40 @@ class Event
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, EventInvitation>
+     */
+    public function getEventInvitations(): Collection
+    {
+        return $this->eventInvitations;
+    }
+
+    public function addEventInvitation(EventInvitation $eventInvitation): self
+    {
+        if (!$this->eventInvitations->contains($eventInvitation)) {
+            $this->eventInvitations[] = $eventInvitation;
+            $eventInvitation->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventInvitation(EventInvitation $eventInvitation): self
+    {
+        if ($this->eventInvitations->removeElement($eventInvitation)) {
+            // set the owning side to null (unless already changed)
+            if ($eventInvitation->getEvent() === $this) {
+                $eventInvitation->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
+
 }

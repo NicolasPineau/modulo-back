@@ -36,7 +36,7 @@ class RoleCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            yield IdField::new('id')->hideOnIndex()->hideOnForm(),
+            yield IdField::new('id')->hideOnIndex()->hideOnForm()->hideonDetail(),
             yield TextField::new('name', 'Nom'),
             yield TextField::new('code', 'Code'),
             yield TextField::new('feminineName', 'Nom féminin'),

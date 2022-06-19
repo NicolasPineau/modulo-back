@@ -34,9 +34,13 @@ class TypeEvent
     #[ORM\Column(type: 'boolean')]
     private ?bool $isActive;
 
+    #[ORM\OneToMany(mappedBy: 'typeEvent', targetEntity: TypeEventAuthorization::class)]
+    private $typeEventAuthorizations;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->typeEventAuthorizations = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -123,6 +127,36 @@ class TypeEvent
     public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TypeEventAuthorization>
+     */
+    public function getTypeEventAuthorizations(): Collection
+    {
+        return $this->typeEventAuthorizations;
+    }
+
+    public function addTypeEventAuthorization(TypeEventAuthorization $typeEventAuthorization): self
+    {
+        if (!$this->typeEventAuthorizations->contains($typeEventAuthorization)) {
+            $this->typeEventAuthorizations[] = $typeEventAuthorization;
+            $typeEventAuthorization->setTypeEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTypeEventAuthorization(TypeEventAuthorization $typeEventAuthorization): self
+    {
+        if ($this->typeEventAuthorizations->removeElement($typeEventAuthorization)) {
+            // set the owning side to null (unless already changed)
+            if ($typeEventAuthorization->getTypeEvent() === $this) {
+                $typeEventAuthorization->setTypeEvent(null);
+            }
+        }
 
         return $this;
     }

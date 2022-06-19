@@ -13,8 +13,10 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 
-#[UniqueEntity(fields: ['email'], message: 'user.email.already_exist')]
+#[UniqueEntity(fields: ['uuid'], message: 'There is already an account with this uuid')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: '`user`')]
 #[ApiResource]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -48,6 +50,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Event::class, mappedBy: 'concernedUser')]
     private $events;
 
+    #[ORM\ManyToMany(targetEntity: EventInvitation::class, mappedBy: 'recipient')]
+    private $eventInvitations;
+
     #[ORM\Column(type: 'string', enumType: Gender::class)]
     private Gender $genre;
 
@@ -55,6 +60,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->events = new ArrayCollection();
         $this->scopes = new ArrayCollection();
+        $this->eventInvitations = new ArrayCollection();
     }
 
     public function getId(): Uuid
@@ -118,26 +124,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGenre(): Gender
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(Gender $genre): User
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-
-    public function eraseCredentials()
-    {
-    }
-
-    public function __toString(): string
-    {
-        return $this->getFullName();
-    }
 
     public function getFullName(): string
     {
@@ -166,6 +152,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    public function getGenre(): Gender
+    {
+        return $this->genre;
+    }
+
+    public function setGenre(Gender $genre): User
+    {
+        $this->genre = $genre;
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->getFirstName().' '.$this->getLastName();
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
     }
 
     /**
@@ -222,4 +234,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
         return $this;
     }
+
+    /**
+     * @return Collection<int, EventInvitation>
+     */
+    public function getEventInvitations(): Collection
+    {
+        return $this->eventInvitations;
+    }
+
+    public function addEventInvitation(EventInvitation $eventInvitation): self
+    {
+        if (!$this->eventInvitations->contains($eventInvitation)) {
+            $this->eventInvitations[] = $eventInvitation;
+            $eventInvitation->addRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventInvitation(EventInvitation $eventInvitation): self
+    {
+        if ($this->eventInvitations->removeElement($eventInvitation)) {
+            $eventInvitation->removeRecipient($this);
+        }
+
+        return $this;
+    }
+
+
 }

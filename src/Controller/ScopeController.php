@@ -26,10 +26,9 @@ class ScopeController extends AbstractController
     public function index(ScopeRepository $scopeRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $scopes = $scopeRepository->findAll();
-
         $scopes = $paginator->paginate(
             $scopes,
-            $request->query->getInt('page',1),20
+            $request->query->getInt('page', 1), 20
 
         );
 
@@ -41,9 +40,9 @@ class ScopeController extends AbstractController
     #[Route('/new', name: 'app_scope_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, StructureRepository $structureRepository): Response
     {
-        $scope = new Scope(new User('','','','',''),
-            new Structure('','',$structureRepository->find(['id'=> 1])),
-            new Role('','',new AgeSection('','',''),''));
+        $scope = new Scope(new User('', '', '', '', ''),
+            new Structure('', '', $structureRepository->find(['id' => 1])),
+            new Role('', '', new AgeSection('', '', ''), ''));
         $form = $this->createForm(ScopeType::class, $scope);
         $form->handleRequest($request);
 
@@ -53,7 +52,7 @@ class ScopeController extends AbstractController
             $scope->setStructure($form->get('structure')->getData());
             $entityManager->persist($scope);
             $entityManager->flush();
-            $this->addFlash('success scope','Votre scope a bien été crée');
+            $this->addFlash('success scope', 'Votre scope a bien été crée');
 
 
             return $this->redirectToRoute('app_scope_index', [], Response::HTTP_SEE_OTHER);
@@ -76,11 +75,11 @@ class ScopeController extends AbstractController
     #[Route('/{id}/edit', name: 'app_scope_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Scope $scope, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ScopeType::class, $scope,['mapped'=> true]);
+        $form = $this->createForm(ScopeType::class, $scope, ['mapped' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('success scope','Votre scope a bien été modifié');
+            $this->addFlash('success scope', 'Votre scope a bien été modifié');
             $entityManager->flush();
 
             return $this->redirectToRoute('app_scope_index', [], Response::HTTP_SEE_OTHER);
@@ -95,7 +94,7 @@ class ScopeController extends AbstractController
     #[Route('/{id}', name: 'app_scope_delete', methods: ['POST'])]
     public function delete(Request $request, Scope $scope, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$scope->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $scope->getId(), $request->request->get('_token'))) {
 
             $entityManager->remove($scope);
             $entityManager->flush();
