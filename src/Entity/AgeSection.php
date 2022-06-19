@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AgeSectionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AgeSectionRepository::class)]
 #[UniqueEntity('code')]
@@ -13,9 +14,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class AgeSection
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?string $id = null;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\Column(type: 'string', length: 50)]
     private string $name;
@@ -26,14 +28,7 @@ class AgeSection
     #[ORM\Column(type: 'string', length: 50)]
     private string $color;
 
-    public function __construct(string $name, string $code, string $color)
-    {
-        $this->name = $name;
-        $this->code = $code;
-        $this->color = $color;
-    }
-
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
@@ -50,12 +45,12 @@ class AgeSection
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getCode(): string
     {
         return $this->code;
     }
 
-    public function setCode(?string $code): self
+    public function setCode(string $code): self
     {
         $this->code = $code;
 

@@ -9,6 +9,7 @@ use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Event>
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
  * @method Event|null findOneBy(array $criteria, array $orderBy = null)
  * @method Event[]    findAll()

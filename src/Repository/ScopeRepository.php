@@ -28,6 +28,5 @@ class ScopeRepository extends ServiceEntityRepository
             ->orderBy('s.id', 'ASC')
             ->getQuery()
             ->getResult();
-
     }
 }

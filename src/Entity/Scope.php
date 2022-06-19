@@ -6,16 +6,17 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ScopeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
-use App\Entity\User;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ScopeRepository::class)]
 #[ApiResource]
 class Scope
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     private User $user;
@@ -27,13 +28,18 @@ class Scope
     private Role $role;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $active = true;
+    private bool $active;
 
     #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
+    #[Pure]
+    public function __construct()
+    {
+        $this->active = true;
+    }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
@@ -48,7 +54,6 @@ class Scope
         $this->user = $user;
 
         return $this;
-
     }
 
     public function getStructure(): Structure
@@ -62,7 +67,6 @@ class Scope
 
         return $this;
     }
-
 
     public function getRole(): Role
     {
@@ -83,7 +87,6 @@ class Scope
     public function setActive(bool $active): self
     {
         $this->active = $active;
-
         return $this;
     }
 
@@ -98,6 +101,4 @@ class Scope
 
         return $this;
     }
-
-
 }
