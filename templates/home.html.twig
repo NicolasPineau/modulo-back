@@ -1,5 +1,20 @@
 {% extends 'base.html.twig' %}
 
+{% block bodyClass %}with-bg{% endblock %}
+
 {% block body %}
-  todo
+    <h1>Bienvenues !</h1>
+    <h2>Les derniers évènements</h2>
+    <div class="event-cards">
+        {% for event in events %}
+            <div class="card" style="width: 30rem;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.title }}</h5>
+                    <h6 class="card-text">{{ event.description }}</h6>
+                    <h6 class="card-text">Début : {{ event.dateStart ? event.dateStart|date('d/m/Y à h:m') : ' ' }}</h6>
+                    <h6 class="card-text">Fin : {{ event.dateEnd ? event.dateEnd|date('d/m/Y à h:m') : ' ' }}</h6>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

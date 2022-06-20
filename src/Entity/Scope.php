@@ -4,38 +4,43 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ScopeRepository;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ScopeRepository::class)]
 #[ApiResource]
 class Scope
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[ORM\Column(type: 'uuid', length: 96, unique: true)]
+    private Uuid $id;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'], inversedBy: 'scopes')]
     private User $user;
 
-    #[ORM\ManyToOne(targetEntity: Structure::class)]
+    #[ORM\ManyToOne(targetEntity: Structure::class, cascade: ['persist'])]
     private Structure $structure;
 
-    #[ORM\ManyToOne(targetEntity: Role::class)]
+    #[ORM\ManyToOne(targetEntity: Role::class, cascade: ['persist'])]
     private Role $role;
 
     #[ORM\Column(type: 'boolean')]
-    private bool $active = true;
+    private bool $isActive;
 
-    #[Pure] public function __construct(User $user, Structure $structure, Role $role)
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTime $createdAt;
+
+    #[Pure]
+    public function __construct()
     {
-        $this->user = $user;
-        $this->structure = $structure;
-        $this->role = $role;
+        $this->isActive = true;
     }
 
-    public function getId(): ?int
+    public function getId(): Uuid
     {
         return $this->id;
     }
@@ -45,9 +50,23 @@ class Scope
         return $this->user;
     }
 
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
     public function getStructure(): Structure
     {
         return $this->structure;
+    }
+
+    public function setStructure(Structure $structure): self
+    {
+        $this->structure = $structure;
+
+        return $this;
     }
 
     public function getRole(): Role
@@ -55,15 +74,32 @@ class Scope
         return $this->role;
     }
 
-    public function setActive(bool $active): self
+    public function setRole(Role $role): self
     {
-        $this->active = $active;
-
+        $this->role = $role;
         return $this;
     }
 
-    public function isActive(): bool
+    public function getIsActive(): bool
     {
-        return $this->active;
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

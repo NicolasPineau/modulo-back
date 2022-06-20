@@ -1,0 +1,23 @@
+{{ form_start(form) }}
+<div id="screen-left">
+    {{ form_label(form.user) }}
+    <div>
+        {{ form_widget(form.user) }}
+    </div>
+    {{ form_label(form.role) }}
+    <div>
+        {{ form_widget(form.role) }}
+    </div>
+</div>
+<div id="screen-right">
+    {{ form_label(form.structure)}}
+    <div>
+        {{ form_widget(form.structure)}}
+    </div>
+    {{ form_label(form.active)}}
+    <div>
+        {{ form_widget(form.active) }}
+    </div>
+</div>
+
+{{ form_end(form) }}

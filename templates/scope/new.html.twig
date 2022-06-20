@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Scope{% endblock %}
+
+{% block body %}
+    <h1>Créer un Scope</h1>
+
+    <div class="container-fluid">
+        {{ include('scope/_form.html.twig') }}
+    </div>
+
+    <div class="row">
+        <div>
+            <button class="btn-create" form="form_scope">Création</button>
+        </div>
+        <div>
+            <a href="{{ path('app_scope_index') }}">Revenir à la liste</a>
+        </div>
+    </div>
+{% endblock %}

@@ -9,8 +9,11 @@ use LogicException;
 
 class StructureFixture extends Fixture
 {
+    public const REFERENCE_NAME = Structure::class;
+
     public function load(ObjectManager $manager): void
     {
+
         $structuresData = [
             [
                 'name' => 'National',
@@ -403,8 +406,12 @@ class StructureFixture extends Fixture
             } else {
                 $parent = null;
             }
-            $structure = new Structure($row['name'], $row['code'], $parent);
+            $structure = (new Structure())
+                ->setName($row['name'])
+                ->setCode($row['code'])
+                ->setParentStructure($parent);
             $manager->persist($structure);
+
             $structures[$row['code']] = $structure;
             $this->addReference(sprintf('structure-%s', $row['code']), $structure);
         }

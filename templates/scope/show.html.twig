@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scope{% endblock %}
+
+{% block body %}
+    <h1>Scope</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Active</th>
+                <td>{{ scope.active ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Structure</th>
+                <td>{{ scope.structure.name}}</td>
+            </tr>
+            <tr>
+                <th>Rôle</th>
+                <td>{{ scope.role.name}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_scope_index') }}">Retour à la liste</a>
+
+    <a href="{{ path('app_scope_edit', {'id': scope.id}) }}">Modifier</a>
+
+{% endblock %}
